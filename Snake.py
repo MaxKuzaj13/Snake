@@ -43,15 +43,15 @@ def main():
     game_loading()
     os.system('clear')
     screan = create_screan()
-    box = pygame.Rect(10, 10, 10, 10)
+    box = pygame.Rect(100, 100, 100, 100)
     while True:
-        clock.tick(1)
+        clock.tick(game_speed_value)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit(0)
 
         # Input
-        box.x += 1
+        box.x += game_speed_value
 
         # Drawing
         pygame.draw.rect(screan, (100, 150, 160), box)

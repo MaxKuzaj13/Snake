@@ -54,7 +54,7 @@ def main():
         box.x += 1
 
         # Drawing
-        pygame.draw.rect(screan, (100, 150, 160), box)
+        pygame.draw.rect(screen, (100, 150, 160), box)
         pygame.display.flip()
 
 

@@ -11,22 +11,22 @@ game_speed_value = 1
 
 
 def insert_name():
-    name_player = input('Enter player name: ')
-    if name_player == '':
-        name_player = 'player1'
-    return name_player
+    player_name = input('Enter player name: ')
+    if player_name == '':
+        player_name = 'player1'
+    return player_name
 
 
-def print_hello_message(name_player):
-    print(f'Welcome {name_player} to the best game ever!! Python - Snake')
+def print_hello_message(player_name):
+    print(f'Welcome {player_name} to the best game ever! Python - Snake')
 
 
 def game_loading():
-    print('Game are loading')
+    print('The game is loading...')
     clock.tick(1)
 
 
-def create_screan():
+def create_screen():
     pygame.init()
     screen = pygame.display.set_mode((res_x, res_y))
     # pygame.display.update()
@@ -37,12 +37,12 @@ def create_screan():
 def main():
     os.system('clear')
     # add new player and print welcome information
-    name_player = insert_name()
-    print_hello_message(name_player)
+    player_name = insert_name()
+    print_hello_message(player_name)
     # start a game
     game_loading()
     os.system('clear')
-    screan = create_screan()
+    screen = create_screen()
     box = pygame.Rect(100, 100, 100, 100)
     while True:
         clock.tick(game_speed_value)
@@ -54,7 +54,7 @@ def main():
         box.x += game_speed_value
 
         # Drawing
-        pygame.draw.rect(screan, (100, 150, 160), box)
+        pygame.draw.rect(screen, (100, 150, 160), box)
         pygame.display.flip()
 
 

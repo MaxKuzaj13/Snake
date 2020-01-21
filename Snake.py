@@ -2,15 +2,19 @@
 import os
 import pygame
 import sys
+from random import randint
 
 pygame.init()
 clock = pygame.time.Clock()
 res_x = 1000
 res_y = 800
+myfont = pygame.font.SysFont('monospace', 16)
 game_speed_value = 10
 black = (0,0,0)
 size_snake = (20, 20, 20, 20)
 count = 0
+
+score = 0
 
 
 def insert_name():
@@ -38,6 +42,19 @@ def create_screen():
     return screen
 
 
+def text_and_score(screen, score):
+    disclaimertext = myfont.render("A work of a few great minds learning at Codecool.", 1, (0,0,0))
+    screen.blit(disclaimertext, (5, 480))
+    scoretext = myfont.render("Score = "+str(score), 1, (0,0,0))
+    screen.blit(scoretext, (5, 10))
+    while 1:         
+        for event in pygame.event.get():
+            pygame.display.flip()
+            if event.type == pygame.QUIT:sys.exit()
+            pygame.time.wait(100)
+            score = score + 1
+
+
 def clear_screen(count, screen):
     count += 1
     print(count)
@@ -50,6 +67,17 @@ def clear_screen(count, screen):
     return count
 
 
+def spawn_apple(res_x, res_y):
+    apple_position = (randint(0,res_x), randint(0,res_y))
+    return apple_position
+
+
+def catch_apple():
+    score += 1
+    segments += 1
+    spawn_apple(res_x, res_y)
+
+
 def main():
     os.system('clear')
     # add new player and print welcome information
@@ -59,6 +87,7 @@ def main():
     game_loading()
     os.system('clear')
     screen = create_screen()
+    text_and_score(screen, score)
     box = pygame.Rect(size_snake)
     global count
     while True:
@@ -76,6 +105,10 @@ def main():
         count = clear_screen(count, screen)
         pygame.draw.rect(screen, (255, 0, 0), box)
         pygame.display.flip()
+        spawn_apple(res_x, res_y)
+        if player_position == apple_position:
+            catch_apple()
+
 
 
 if __name__ == "__main__":

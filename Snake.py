@@ -65,13 +65,13 @@ def clear_screen(count, screen):
 
 
 def spawn_apple(res_x, res_y):
-    apple_position = (randint(0,res_x), randint(0,res_y))
-    return apple_position
+    apple_x = randint(0,res_x)
+    apple_y = randint(0,res_y)
+    return apple_x, apple_y
 
 
 def catch_apple():
     score += 1
-    segments += 1
     spawn_apple(res_x, res_y)
 
 
@@ -124,6 +124,7 @@ def main():
         pygame.draw.rect(screen, (255, 0, 0), box)
         pygame.display.flip()
         spawn_apple(res_x, res_y)
+        pygame.draw.rect(surface, box_color, [apple_x, apple_y, box_size, box_size])
         if player_position == apple_position:
             catch_apple()
 

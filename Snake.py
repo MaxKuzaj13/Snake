@@ -47,6 +47,29 @@ def clear_screen(count, screen):
     return count
 
 
+def player_coordinates(box):
+    coordinates = [box[0], box[1]]
+    return coordinates
+
+def is_snake_in_wall(player_position, res_x, res_y):
+    if player_position[1] < 0 or player_position[1] > res_y:
+        return True
+    elif player_position[0] < 0 or player_position[0] > res_x:
+        return True
+    else:
+        return False
+
+def is_snake_bitten_tail():
+    return False
+
+def is_snake_dead(player_position, res_x, res_y):
+    if is_snake_in_wall(player_position, res_x, res_y):
+        return True
+    elif is_snake_bitten_tail():
+        return True
+    else:
+        return False
+
 def main():
     os.system('clear')
     # add new player and print welcome information
@@ -65,18 +88,17 @@ def main():
             if event.type == pygame.QUIT:
                 sys.exit(0)
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_UP:
-                    box.y += 10
+                if event.key == pygame.K_UP and creep_direction != 180:
                     creep_direction = 0
-                elif event.key == pygame.K_RIGHT:
-                    box.y += 10
+                elif event.key == pygame.K_RIGHT and creep_direction != 270:
                     creep_direction = 90
-                elif event.key == pygame.K_DOWN:
-                    box.y += 10
+                elif event.key == pygame.K_DOWN and creep_direction != 0:
                     creep_direction = 180
-                elif event.key == pygame.K_LEFT:
+                elif event.key == pygame.K_LEFT and creep_direction != 90:
                     box.y += 10
                     creep_direction = 270
+                else:
+                    creep_direction
 
         # InputK
         keys = pygame.key.get_pressed()
@@ -93,6 +115,12 @@ def main():
         # Clear screen
         count = clear_screen(count, screen)
         pygame.draw.rect(screen, (255, 0, 0), box)
+        player_position = player_coordinates(box)
+
+        print(player_position)
+        print(is_snake_dead(player_position, res_x, res_y))
+        if is_snake_dead(player_position, res_x, res_y) == True:
+            break
         pygame.display.flip()
 
 

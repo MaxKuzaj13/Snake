@@ -10,7 +10,7 @@ res_x = 1000
 res_y = 800
 myfont = pygame.font.SysFont('monospace', 16)
 game_speed_value = 10
-black = (0,0,0)
+black = (0, 0, 0)
 size_snake = (20, 20, 20, 20)
 count = 0
 
@@ -36,9 +36,6 @@ def game_loading():
 def create_screen():
     pygame.init()
     screen = pygame.display.set_mode((res_x, res_y))
-    # pygame.display.update()
-    # pygame.quit()
-    # quit()
     return screen
 
 
@@ -57,7 +54,7 @@ def text_and_score(screen, score):
 
 def clear_screen(count, screen):
     count += 1
-    print(count)
+    # print(count)
     # clear screen every 4 moves
     if count == 5:
         screen.fill(black)
@@ -90,15 +87,36 @@ def main():
     text_and_score(screen, score)
     box = pygame.Rect(size_snake)
     global count
+    creep_direction = 90
     while True:
-        clock.tick(game_speed_value )
+        clock.tick(game_speed_value)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit(0)
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_UP:
+                    box.y += 10
+                    creep_direction = 0
+                elif event.key == pygame.K_RIGHT:
+                    box.y += 10
+                    creep_direction = 90
+                elif event.key == pygame.K_DOWN:
+                    box.y += 10
+                    creep_direction = 180
+                elif event.key == pygame.K_LEFT:
+                    box.y += 10
+                    creep_direction = 270
 
-        # Input
-        box.x += game_speed_value
-        #box.y += game_speed_value
+        # InputK
+        keys = pygame.key.get_pressed()
+        if creep_direction == 90:
+            box.x += game_speed_value
+        elif creep_direction == 180:
+            box.y += game_speed_value
+        elif creep_direction == 270:
+            box.x -= game_speed_value
+        elif creep_direction == 0:
+            box.y -= game_speed_value
 
         # Drawing
         # Clear screen

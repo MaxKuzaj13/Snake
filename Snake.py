@@ -111,9 +111,14 @@ def is_snake_dead(player_position, res_x, res_y):
         return False
 
 
+def list_of_move_player(player_position, player_move):
+    player_move.append(player_position)
+    return player_move
+
 def main():
     os.system('clear')
     score = 0
+    player_move = []
     # add new player and print welcome information
     player_name = insert_name()
     print_hello_message(player_name)
@@ -144,7 +149,6 @@ def main():
                     pass
 
         # InputK
-        keys = pygame.key.get_pressed()
         if creep_direction == 90:
             box.x += game_speed_value
         elif creep_direction == 180:
@@ -159,15 +163,15 @@ def main():
         count = clear_screen(count, screen)
         pygame.draw.rect(screen, (255, 0, 0), box)
         player_position = player_coordinates(box)
-
-        print(player_position)
+        player_move = list_of_move_player(player_position, player_move)
+        # print(player_position)
         # print(is_snake_dead(player_position, res_x, res_y))
         if is_snake_dead(player_position, res_x, res_y) == True:
             break
 
         pygame.draw.rect(screen, box_color, (apple_x, apple_y, 20, 20))
         pygame.display.flip()
-
+        # print(player_move)
         if player_position == [apple_x, apple_y]:
 
             score = catch_apple(score)

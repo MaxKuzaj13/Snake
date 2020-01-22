@@ -83,18 +83,19 @@ def is_snake_in_wall(player_position, res_x, res_y):
 
 
 def spawn_apple(res_x, res_y):
-    apple_x = randint(0, res_x)
-    apple_y = randint(0, res_y)
+    apple_x = (randint(0, res_x/10))*10
+    apple_y = (randint(0, res_y/10))*10
     return apple_x, apple_y
 
 
 # do sprawdzenia
 
-'''
-def catch_apple():
+
+def catch_apple(score):
     score += 1
     spawn_apple(res_x, res_y)
-'''
+    return score
+
 
 
 def is_snake_bitten_tail():
@@ -112,6 +113,7 @@ def is_snake_dead(player_position, res_x, res_y):
 
 def main():
     os.system('clear')
+    score = 0
     # add new player and print welcome information
     player_name = insert_name()
     print_hello_message(player_name)
@@ -166,9 +168,11 @@ def main():
         pygame.draw.rect(screen, box_color, (apple_x, apple_y, 20, 20))
         pygame.display.flip()
 
-        # if player_position == apple_position:
-        #    catch_apple()
+        if player_position == [apple_x, apple_y]:
 
+            score = catch_apple(score)
+            apple_x, apple_y = spawn_apple(res_x, res_y)
+            print(f'Score: {score}')
 
 if __name__ == "__main__":
     main()

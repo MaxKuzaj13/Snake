@@ -41,19 +41,19 @@ def create_screen():
 
 
 # do sprawdzenia
-'''
-def text_and_score(screen, score):
-    disclaimertext = myfont.render("A work of a few great minds learning at Codecool.", 1, (0,0,0))
-    screen.blit(disclaimertext, (5, 480))
-    scoretext = myfont.render("Score = "+str(score), 1, (0,0,0))
-    screen.blit(scoretext, (5, 10))
-    while 1:         
-        for event in pygame.event.get():
-            pygame.display.flip()
-            if event.type == pygame.QUIT:sys.exit()
-            pygame.time.wait(100)
-            score = score + 1
-'''
+
+def text_and_score(screen, score, player_name):
+    disclaimertext = myfont.render('SNAKE', 1, (255,255,255))
+    nametext = myfont.render(f'Player: {player_name}', 1, (255,255,255))
+    screen.blit(nametext, (10, 10))
+    screen.blit(disclaimertext, (480, 745))
+    scoretext = myfont.render("Score: "+str(score), 1, (255,255,255))
+    screen.blit(scoretext, (10, 30))
+    # while 1:         
+    #    for event in pygame.event.get():
+    #        pygame.display.flip()
+    #        pygame.time.wait(100)
+
 
 
 def clear_screen(count, screen):
@@ -121,7 +121,6 @@ def main():
     game_loading()
     os.system('clear')
     screen = create_screen()
-    # text_and_score(screen, score)
     box = pygame.Rect(size_snake)
     global count
     creep_direction = 90
@@ -166,6 +165,7 @@ def main():
             break
 
         pygame.draw.rect(screen, box_color, (apple_x, apple_y, 20, 20))
+        text_and_score(screen, score, player_name)
         pygame.display.flip()
 
         if player_position == [apple_x, apple_y]:

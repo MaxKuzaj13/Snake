@@ -49,11 +49,6 @@ def text_and_score(screen, score, player_name):
     screen.blit(nametext, (10, 10))
     screen.blit(disclaimertext, (475, 745))
     screen.blit(scoretext, (10, 30))
-    # while 1:         
-    #    for event in pygame.event.get():
-    #        pygame.display.flip()
-    #        pygame.time.wait(100)
-
 
 
 def clear_screen(count, screen):
@@ -139,8 +134,21 @@ def inputs_from_os(creep_direction):
 
             return creep_direction
 
+
+def direction_control(box, game_speed_value ,creep_direction):
+    if creep_direction == 90:
+        box.x += game_speed_value
+    elif creep_direction == 180:
+        box.y += game_speed_value
+    elif creep_direction == 270:
+        box.x -= game_speed_value
+    elif creep_direction == 0:
+        box.y -= game_speed_value
+
+    return box
+
 def main():
-    os.system('clear')
+    # initial parameters
     score = 0
     player_move = []
     # add new player and print welcome information
@@ -159,19 +167,12 @@ def main():
         creep_direction = inputs_from_os(creep_direction)
 
 
-        # InputK
-        if creep_direction == 90:
-            box.x += game_speed_value
-        elif creep_direction == 180:
-            box.y += game_speed_value
-        elif creep_direction == 270:
-            box.x -= game_speed_value
-        elif creep_direction == 0:
-            box.y -= game_speed_value
+        # Input control of direction creep
+        box = direction_control(box, game_speed_value, creep_direction)
 
-        # Drawing
         # Clear screen
         count = clear_screen(count, screen)
+        # Drawing worm
         pygame.draw.rect(screen, (255, 0, 0), box)
         player_position = player_coordinates(box)
         player_move = list_of_move_player(player_position, player_move)

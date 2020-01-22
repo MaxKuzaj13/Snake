@@ -43,11 +43,11 @@ def create_screen():
 # do sprawdzenia
 
 def text_and_score(screen, score, player_name):
-    disclaimertext = myfont.render('SNAKE', 1, (255,255,255))
-    nametext = myfont.render(f'Player: {player_name}', 1, (255,255,255))
+    disclaimertext = myfont.render('SNAKE', 0, (255,255,255))
+    nametext = myfont.render(f'Player: {player_name}', 0, (255,255,255))
+    scoretext = myfont.render("Score: "+str(score), 0, (255,255,255))
     screen.blit(nametext, (10, 10))
-    screen.blit(disclaimertext, (480, 745))
-    scoretext = myfont.render("Score: "+str(score), 1, (255,255,255))
+    screen.blit(disclaimertext, (475, 745))
     screen.blit(scoretext, (10, 30))
     # while 1:         
     #    for event in pygame.event.get():
@@ -173,6 +173,7 @@ def main():
             score = catch_apple(score)
             apple_x, apple_y = spawn_apple(res_x, res_y)
             print(f'Score: {score}')
+
 
 if __name__ == "__main__":
     main()

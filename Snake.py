@@ -14,7 +14,7 @@ black = (0, 0, 0)
 size_snake = (20, 20, 20, 20)
 count = 0
 box_color = (0, 255, 0)
-
+creep_direction = 90
 score = 0
 
 
@@ -113,7 +113,31 @@ def is_snake_dead(player_position, res_x, res_y):
 
 def list_of_move_player(player_position, player_move):
     player_move.append(player_position)
+    if len(player_move) > 15:
+        player_move = player_move[:-1]
     return player_move
+
+def inputs_from_os(creep_direction):
+    temp_key = pygame.event.get()
+    if len(temp_key) ==0:
+        return creep_direction
+    else:
+        for event in temp_key:
+            if event.type == pygame.QUIT:
+                sys.exit(0)
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_UP and creep_direction != 180:
+                    creep_direction = 0
+                elif event.key == pygame.K_RIGHT and creep_direction != 270:
+                    creep_direction = 90
+                elif event.key == pygame.K_DOWN and creep_direction != 0:
+                    creep_direction = 180
+                elif event.key == pygame.K_LEFT and creep_direction != 90:
+                    creep_direction = 270
+            else:
+                return creep_direction
+
+            return creep_direction
 
 def main():
     os.system('clear')
@@ -132,20 +156,8 @@ def main():
     apple_x, apple_y = spawn_apple(res_x, res_y)
     while True:
         clock.tick(game_speed_value)
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                sys.exit(0)
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_UP and creep_direction != 180:
-                    creep_direction = 0
-                elif event.key == pygame.K_RIGHT and creep_direction != 270:
-                    creep_direction = 90
-                elif event.key == pygame.K_DOWN and creep_direction != 0:
-                    creep_direction = 180
-                elif event.key == pygame.K_LEFT and creep_direction != 90:
-                    creep_direction = 270
-                else:
-                    pass
+        creep_direction = inputs_from_os(creep_direction)
+
 
         # InputK
         if creep_direction == 90:
@@ -170,13 +182,17 @@ def main():
 
         pygame.draw.rect(screen, box_color, (apple_x, apple_y, 20, 20))
         text_and_score(screen, score, player_name)
-        pygame.display.flip()
-        # print(player_move)
-        if player_position == [apple_x, apple_y]:
 
+        # print(player_move)
+        # Check is a player eat apple
+        # is_a_player_eat_apple():
+        if player_position == [apple_x, apple_y]:
             score = catch_apple(score)
             apple_x, apple_y = spawn_apple(res_x, res_y)
-            print(f'Score: {score}')
+            # print(f'Score: {score}')
+
+        pygame.display.flip()
+
 
 if __name__ == "__main__":
     main()

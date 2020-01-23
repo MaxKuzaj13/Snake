@@ -53,10 +53,17 @@ def text_and_score(screen, score, player_name):
 
 def menu(screen):
     game = 0
+<<<<<<< HEAD
     menu_text = bigfont.render('Snake — The Game', 0, (255,255,255))
     start_text = myfont.render('Press ENTER to start', 0, (255,255,255))
     screen.blit(menu_text, (310, 30))
     screen.blit(start_text, (410, 600))
+=======
+    menutext = bigfont.render('Snake — The Game', 0, (255,255,255))
+    starttext = myfont.render('Press ENTER to start', 0, (255,255,255))
+    screen.blit(menutext, (310, 30))
+    screen.blit(starttext, (410, 600))
+>>>>>>> e91abb6cc3f198240dde7337cd2d612919c443e3
     pygame.display.flip()
     temp_key = pygame.event.get()
     for event in temp_key:

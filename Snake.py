@@ -95,10 +95,14 @@ def menu(screen, res_x):
     return game
 
 
-def clear_screen(count, screen):
+def clear_screen(count, screen, game_mode):
     count += 1
     # clear screen every 4 moves when we use worm not snake
-    if count == 1:  # 5 jesli chemy pełcać
+    if game_mode == 0:
+        refresh = 1
+    else:
+        refresh = 5
+    if count == refresh:  # 5 jesli chemy pełcać
         screen.fill(black)
         count = 0
     else:
@@ -212,7 +216,8 @@ def draw_apple_and_score(screen, apple_x, apple_y, player_name, score):
 
 def draw_the_worm(game_mode, player_move, screen, box, pixel_size):
     if game_mode == 0:
-        # Drawing worm longer then 1
+        print('snake')
+        # Drawing snake longer then 1
         for i in range(len(player_move)):
             if i == 0:
                 pygame.draw.rect(screen, (255, 0, 0), box)
@@ -220,6 +225,7 @@ def draw_the_worm(game_mode, player_move, screen, box, pixel_size):
                 pygame.draw.rect(screen, (255, 0, 0), (player_move[i][0], player_move[i][1], pixel_size, pixel_size))
     elif game_mode == 1:
         # Drowing worm lenght 1
+        print('worm')
         pygame.draw.rect(screen, (255, 0, 0), box)
     else:
         sys.exit(0)
@@ -227,7 +233,6 @@ def draw_the_worm(game_mode, player_move, screen, box, pixel_size):
 
 def main():
     # initial parameters
-    game_mode = 0
     score = 0
     game = 0
     player_move = []
@@ -238,6 +243,8 @@ def main():
     game_loading()
     os.system('clear')
     screen = create_screen()
+    pygame.mixer.music.load('sas.mp3')
+    pygame.mixer.music.play(-1)
     while game == 0:
         game = menu(screen, res_x)
     pygame.display.flip()
@@ -251,7 +258,7 @@ def main():
         # Input control of direction creep
         box = direction_control(box, game_speed_value, creep_direction)
         # Clear screen
-        count = clear_screen(count, screen)
+        count = clear_screen(count, screen, game_mode)
         # Drawing worm
         draw_the_worm(game_mode, player_move, screen, box, pixel_size)
         player_position = player_coordinates(box)

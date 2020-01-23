@@ -55,7 +55,7 @@ def clear_screen(count, screen):
     count += 1
     # print(count)
     # clear screen every 4 moves
-    if count == 5:
+    if count == 1: # 5 jesli chemy pełcać
         screen.fill(black)
         count = 0
     else:
@@ -106,11 +106,13 @@ def is_snake_dead(player_position, res_x, res_y):
         return False
 
 
-def list_of_move_player(player_position, player_move):
+def list_of_move_player(player_position, player_move, score):
     player_move.append(player_position)
-    if len(player_move) > 15:
-        player_move = player_move[:-1]
+    lenght_snake = score + 4
+    if len(player_move) > lenght_snake:
+        player_move = player_move[1:]
     return player_move
+
 
 def inputs_from_os(creep_direction):
     temp_key = pygame.event.get()
@@ -165,17 +167,21 @@ def main():
     while True:
         clock.tick(game_speed_value)
         creep_direction = inputs_from_os(creep_direction)
-
-
         # Input control of direction creep
         box = direction_control(box, game_speed_value, creep_direction)
-
         # Clear screen
         count = clear_screen(count, screen)
         # Drawing worm
-        pygame.draw.rect(screen, (255, 0, 0), box)
+        # Drawing worm longer then 1
+        for i in range(len(player_move)):
+            if i == 0:
+                pygame.draw.rect(screen, (255, 0, 0), box)
+            else:
+                pygame.draw.rect(screen, (255, 0, 0), (player_move[i][0], player_move[i][1], 20, 20))
+        # Drowing worm lenght 1
+        #pygame.draw.rect(screen, (255, 0, 0), box)
         player_position = player_coordinates(box)
-        player_move = list_of_move_player(player_position, player_move)
+        player_move = list_of_move_player(player_position, player_move, score)
         # print(player_position)
         # print(is_snake_dead(player_position, res_x, res_y))
         if is_snake_dead(player_position, res_x, res_y) == True:

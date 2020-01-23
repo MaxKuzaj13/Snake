@@ -42,23 +42,21 @@ def create_screen():
     return screen
 
 
-# do sprawdzenia
-
 def text_and_score(screen, score, player_name):
-    disclaimertext = myfont.render('SNAKE', 0, (255,255,255))
-    nametext = myfont.render(f'Player: {player_name}', 0, (255,255,255))
-    scoretext = myfont.render("Score: "+str(score), 0, (255,255,255))
-    screen.blit(nametext, (10, 10))
-    screen.blit(disclaimertext, (475, 745))
-    screen.blit(scoretext, (10, 30))
+    disclaimer_text = myfont.render('SNAKE', 0, (255, 255, 255))
+    name_text = myfont.render(f'Player: {player_name}', 0, (255, 255, 255))
+    score_text = myfont.render("Score: "+str(score), 0, (255, 255, 255))
+    screen.blit(name_text, (10, 10))
+    screen.blit(disclaimer_text, (475, 745))
+    screen.blit(score_text, (10, 30))
 
 
 def menu(screen):
     game = 0
-    menutext = bigfont.render('Snake — The Game', 0, (255,255,255))
-    starttext = myfont.render('Press ENTER to start', 0, (255,255,255))
-    screen.blit(menutext, (310, 30))
-    miganie = screen.blit(starttext, (410, 600))
+    menu_text = bigfont.render('Snake — The Game', 0, (255,255,255))
+    start_text = myfont.render('Press ENTER to start', 0, (255,255,255))
+    screen.blit(menu_text, (310, 30))
+    screen.blit(start_text, (410, 600))
     pygame.display.flip()
     temp_key = pygame.event.get()
     for event in temp_key:
@@ -72,9 +70,8 @@ def menu(screen):
 
 def clear_screen(count, screen):
     count += 1
-    # print(count)
-    # clear screen every 4 moves
-    if count == 1: # 5 jesli chemy pełcać
+    # clear screen every 4 moves when we use worm not snake
+    if count == 1:  # 5 jesli chemy pełcać
         screen.fill(black)
         count = 0
     else:
@@ -170,8 +167,8 @@ def direction_control(box, game_speed_value ,creep_direction):
 
 
 def draw_apple_and_score(screen, apple_x, apple_y, player_name, score):
-    appleIMG = pygame.image.load('apple.png')
-    screen.blit(appleIMG, (apple_x, apple_y))
+    apple_img = pygame.image.load('apple.png')
+    screen.blit(apple_img, (apple_x, apple_y))
     text_and_score(screen, score, player_name)
     # if we need make rectangle
     '''

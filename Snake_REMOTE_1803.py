@@ -9,7 +9,7 @@ clock = pygame.time.Clock()
 res_x = 1000
 res_y = 800
 myfont = pygame.font.SysFont('monospace', 16)
-bigfont = pygame.font.SysFont('monospace', 44, bold=True, italic=True)
+bigfont = pygame.font.SysFont('monospace', 44)
 game_speed_value = 10
 black = (0, 0, 0)
 pixel_size = 20
@@ -18,7 +18,6 @@ count = 0
 box_color = (0, 255, 0)
 creep_direction = 90
 score = 0
-game_mode = 0
 
 
 def insert_name():
@@ -52,31 +51,12 @@ def text_and_score(screen, score, player_name):
     screen.blit(score_text, (10, 30))
 
 
-def menu(screen, res_x):
-    global game_mode
+def menu(screen):
     game = 0
     menu_text = bigfont.render('Snake — The Game', 0, (255, 255, 255))
     start_text = myfont.render('Press ENTER to start', 0, (255, 255, 255))
-    mode_text = myfont.render('Press ANY OTHER KEY to change mode', 0, (255,255,255))
-    snake_mode_text = myfont.render('SNAKE MODE', 0, (255,255,255))
-    worm_mode_text = myfont.render('WORM MODE', 0, (255,255,255))
-
-    menu_text_rect = menu_text.get_rect(center=(int(res_x / 2), 80))
-    start_text_rect = start_text.get_rect(center=(int(res_x / 2), 600))
-    mode_text_rect = mode_text.get_rect(center=(int(res_x / 2), 620))
-    snake_mode_text_rect = snake_mode_text.get_rect(center=(int(res_x / 2), 640))
-
-    screen.blit(menu_text, menu_text_rect)
-    screen.blit(start_text, start_text_rect)
-    screen.blit(mode_text, mode_text_rect)
-
-    pygame.draw.rect(screen, black, snake_mode_text_rect)
-
-    if game_mode == 0:
-        screen.blit(snake_mode_text, snake_mode_text_rect)
-    elif game_mode == 1:
-        screen.blit(worm_mode_text, snake_mode_text_rect)
-
+    screen.blit(menu_text, (310, 30))
+    screen.blit(start_text, (410, 600))
     pygame.display.flip()
     temp_key = pygame.event.get()
     for event in temp_key:
@@ -85,24 +65,13 @@ def menu(screen, res_x):
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
                 game = 1
-            elif event.key == pygame.K_LSHIFT or pygame.K_RSHIFT:
-                if game_mode == 0:
-                    game_mode = 1
-                    print(game_mode)
-                elif game_mode == 1:
-                    game_mode = 0
-                    print(game_mode)
     return game
 
 
-def clear_screen(count, screen, game_mode):
+def clear_screen(count, screen):
     count += 1
     # clear screen every 4 moves when we use worm not snake
-    if game_mode == 0:
-        refresh = 1
-    else:
-        refresh = 5
-    if count == refresh:  # 5 jesli chemy pełcać
+    if count == 1:  # 5 jesli chemy pełcać
         screen.fill(black)
         count = 0
     else:
@@ -216,8 +185,7 @@ def draw_apple_and_score(screen, apple_x, apple_y, player_name, score):
 
 def draw_the_worm(game_mode, player_move, screen, box, pixel_size):
     if game_mode == 0:
-        print('snake')
-        # Drawing snake longer then 1
+        # Drawing worm longer then 1
         for i in range(len(player_move)):
             if i == 0:
                 pygame.draw.rect(screen, (255, 0, 0), box)
@@ -225,7 +193,6 @@ def draw_the_worm(game_mode, player_move, screen, box, pixel_size):
                 pygame.draw.rect(screen, (255, 0, 0), (player_move[i][0], player_move[i][1], pixel_size, pixel_size))
     elif game_mode == 1:
         # Drowing worm lenght 1
-        print('worm')
         pygame.draw.rect(screen, (255, 0, 0), box)
     else:
         sys.exit(0)
@@ -233,6 +200,7 @@ def draw_the_worm(game_mode, player_move, screen, box, pixel_size):
 
 def main():
     # initial parameters
+    game_mode = 0
     score = 0
     game = 0
     player_move = []
@@ -243,11 +211,9 @@ def main():
     game_loading()
     os.system('clear')
     screen = create_screen()
-    pygame.mixer.music.load('sas.mp3')
-    pygame.mixer.music.play(-1)
     while game == 0:
-        game = menu(screen, res_x)
-    pygame.display.flip()
+        # zmienić na ardziej ituicyjne
+        game = menu(screen)
     box = pygame.Rect(size_snake)
     global count
     creep_direction = 90
@@ -258,7 +224,7 @@ def main():
         # Input control of direction creep
         box = direction_control(box, game_speed_value, creep_direction)
         # Clear screen
-        count = clear_screen(count, screen, game_mode)
+        count = clear_screen(count, screen)
         # Drawing worm
         draw_the_worm(game_mode, player_move, screen, box, pixel_size)
         player_position = player_coordinates(box)

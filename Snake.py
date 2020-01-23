@@ -12,7 +12,8 @@ myfont = pygame.font.SysFont('monospace', 16)
 bigfont = pygame.font.SysFont('monospace', 44)
 game_speed_value = 10
 black = (0, 0, 0)
-size_snake = (20, 20, 20, 20)
+pixel_size = 20
+size_snake = (20, 20, pixel_size, pixel_size)
 count = 0
 box_color = (0, 255, 0)
 creep_direction = 90
@@ -167,6 +168,17 @@ def direction_control(box, game_speed_value ,creep_direction):
 
     return box
 
+
+def draw_apple_and_score(screen, apple_x, apple_y, player_name, score):
+    appleIMG = pygame.image.load('apple.png')
+    screen.blit(appleIMG, (apple_x, apple_y))
+    text_and_score(screen, score, player_name)
+    # if we need make rectangle
+    '''
+    pygame.draw.rect(screen, box_color, (apple_x, apple_y, 20, 20))
+    
+    '''
+
 def main():
     # initial parameters
     score = 0
@@ -198,7 +210,7 @@ def main():
             if i == 0:
                 pygame.draw.rect(screen, (255, 0, 0), box)
             else:
-                pygame.draw.rect(screen, (255, 0, 0), (player_move[i][0], player_move[i][1], 20, 20))
+                pygame.draw.rect(screen, (255, 0, 0), (player_move[i][0], player_move[i][1], pixel_size, pixel_size))
         # Drowing worm lenght 1
         #pygame.draw.rect(screen, (255, 0, 0), box)
         player_position = player_coordinates(box)
@@ -206,10 +218,9 @@ def main():
         # print(player_position)
         # print(is_snake_dead(player_position, res_x, res_y))
         if is_snake_dead(player_position, res_x, res_y) == True:
-            break
+            sys.exit(0)
+        draw_apple_and_score(screen, apple_x, apple_y, player_name, score)
 
-        pygame.draw.rect(screen, box_color, (apple_x, apple_y, 20, 20))
-        text_and_score(screen, score, player_name)
 
         # print(player_move)
         # Check is a player eat apple

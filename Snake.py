@@ -57,7 +57,7 @@ def menu(screen):
     menutext = bigfont.render('Snake — The Game', 0, (255,255,255))
     starttext = myfont.render('Press ENTER to start', 0, (255,255,255))
     screen.blit(menutext, (310, 30))
-    miganie = screen.blit(starttext, (410, 600))
+    screen.blit(starttext, (410, 600))
     pygame.display.flip()
     temp_key = pygame.event.get()
     for event in temp_key:

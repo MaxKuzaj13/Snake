@@ -18,6 +18,7 @@ count = 0
 box_color = (0, 255, 0)
 creep_direction = 90
 score = 0
+game_mode = 0
 
 
 def insert_name():
@@ -51,19 +52,31 @@ def text_and_score(screen, score, player_name):
     screen.blit(score_text, (10, 30))
 
 
-def menu(screen):
+def menu(screen, res_x):
+    global game_mode
     game = 0
-<<<<<<< HEAD
     menu_text = bigfont.render('Snake — The Game', 0, (255,255,255))
     start_text = myfont.render('Press ENTER to start', 0, (255,255,255))
-    screen.blit(menu_text, (310, 30))
-    screen.blit(start_text, (410, 600))
-=======
-    menutext = bigfont.render('Snake — The Game', 0, (255,255,255))
-    starttext = myfont.render('Press ENTER to start', 0, (255,255,255))
-    screen.blit(menutext, (310, 30))
-    screen.blit(starttext, (410, 600))
->>>>>>> e91abb6cc3f198240dde7337cd2d612919c443e3
+    mode_text = myfont.render('Press SHIFT to change mode', 0, (255,255,255))
+    snake_mode_text = myfont.render('SNAKE MODE', 0, (255,255,255))
+    worm_mode_text = myfont.render('WORM MODE', 0, (255,255,255))
+
+    menu_text_rect = menu_text.get_rect(center=(int(res_x / 2), 80))
+    start_text_rect = start_text.get_rect(center=(int(res_x / 2), 600))
+    mode_text_rect = mode_text.get_rect(center=(int(res_x / 2), 620))
+    snake_mode_text_rect = snake_mode_text.get_rect(center=(int(res_x / 2), 640))
+
+    screen.blit(menu_text, menu_text_rect)
+    screen.blit(start_text, start_text_rect)
+    screen.blit(mode_text, mode_text_rect)
+
+    pygame.draw.rect(screen, black, snake_mode_text_rect)
+
+    if game_mode == 0:
+        screen.blit(snake_mode_text, snake_mode_text_rect)
+    elif game_mode == 1:
+        screen.blit(worm_mode_text, snake_mode_text_rect)
+
     pygame.display.flip()
     temp_key = pygame.event.get()
     for event in temp_key:
@@ -72,6 +85,13 @@ def menu(screen):
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
                 game = 1
+            elif event.key == pygame.K_LSHIFT or pygame.K_RSHIFT:
+                if game_mode == 0:
+                    game_mode = 1
+                    print(game_mode)
+                elif game_mode == 1:
+                    game_mode = 0
+                    print(game_mode)
     return game
 
 
@@ -196,7 +216,8 @@ def main():
     os.system('clear')
     screen = create_screen()
     while game == 0:
-        game = menu(screen)
+        game = menu(screen, res_x)
+    pygame.display.flip()
     box = pygame.Rect(size_snake)
     global count
     creep_direction = 90

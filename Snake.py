@@ -9,6 +9,7 @@ clock = pygame.time.Clock()
 res_x = 1000
 res_y = 800
 myfont = pygame.font.SysFont('monospace', 16)
+bigfont = pygame.font.SysFont('monospace', 44)
 game_speed_value = 10
 black = (0, 0, 0)
 size_snake = (20, 20, 20, 20)
@@ -49,6 +50,23 @@ def text_and_score(screen, score, player_name):
     screen.blit(nametext, (10, 10))
     screen.blit(disclaimertext, (475, 745))
     screen.blit(scoretext, (10, 30))
+
+
+def menu(screen):
+    game = 0
+    menutext = bigfont.render('Snake — The Game', 0, (255,255,255))
+    starttext = myfont.render('Press ENTER to start', 0, (255,255,255))
+    screen.blit(menutext, (310, 30))
+    miganie = screen.blit(starttext, (410, 600))
+    pygame.display.flip()
+    temp_key = pygame.event.get()
+    for event in temp_key:
+        if event.type == pygame.QUIT:
+            sys.exit(0)
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_RETURN:
+                game = 1
+    return game
 
 
 def clear_screen(count, screen):
@@ -150,6 +168,7 @@ def direction_control(box, game_speed_value ,creep_direction):
 def main():
     # initial parameters
     score = 0
+    game = 0
     player_move = []
     # add new player and print welcome information
     player_name = insert_name()
@@ -158,6 +177,8 @@ def main():
     game_loading()
     os.system('clear')
     screen = create_screen()
+    while game == 0:
+        game = menu(screen)
     box = pygame.Rect(size_snake)
     global count
     creep_direction = 90
